@@ -1,3 +1,3 @@
+docker build . -t account_creator
 
-
-java -jar selendroid.jar -app selendroid-test.apk
+docker run -idt --device /dev/kvm --name account_creator account_creator

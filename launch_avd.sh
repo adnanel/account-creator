@@ -1,11 +1,14 @@
 #!/bin/bash
 
+egrep -c '(vmx|svm)' /proc/cpuinfo
+
 # Configuration
-deviceName="Device"
-startEmulatorTimeout=180 # Number of seconds to wait for emulator boot before quitting
+startEmulatorTimeout=18000 # Number of seconds to wait for emulator boot before quitting
+
+avdmanager list avd
 
 # Start the emulator
-/usr/lib/android-sdk/cmdline-tools/bin/emulator -avd "$deviceName" -no-audio -wipe-data &
+emulator -avd Device -no-boot-anim -no-window -no-audio -wipe-data &
 
 # Wait for the boot to finish
 # Thanks: https://gist.github.com/mrk-han/db70c7ce2dfdc8ac3e8ae4bec823ba51

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-egrep -c '(vmx|svm)' /proc/cpuinfo
-
 # Configuration
 startEmulatorTimeout=18000 # Number of seconds to wait for emulator boot before quitting
 
@@ -36,3 +34,17 @@ sleep 10 # Give time for the launcher to appear
 adb shell 'echo "chrome --disable-fre --no-default-browser-check --no-first-run" > /data/local/tmp/chrome-command-line'
 
 echo "Emulator is ready!"
+
+echo "Going into app dir..."
+cd app
+ls -ls
+
+echo "Installing apk..."
+until adb install app.apk
+do
+  echo "Failed, trying again..."
+done
+
+echo "Installed! Running automation script..."
+./script.sh
+

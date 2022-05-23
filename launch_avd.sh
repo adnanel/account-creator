@@ -39,12 +39,7 @@ echo "Going into app dir..."
 cd app
 ls -ls
 
-echo "Installing apk..."
-until adb install app.apk
-do
-  echo "Failed, trying again..."
-done
+adb start-server
 
-echo "Installed! Running automation script..."
 ./script.sh
 

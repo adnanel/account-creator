@@ -1,11 +1,28 @@
 #!/bin/bash
 
-adb start-server
+package=com.whatsapp
+script=./whatsapp.py
 
-# Launch whatsapp
-adb shell monkey -p com.whatsapp 1
+echo "Installing apk..."
+until adb install app.apk
+do
+  echo "Failed, trying again..."
+done
 
-python3 ./whatsapp.py
+echo "Installed! Running automation script..."
+
+# Launch app
+adb shell monkey -p $package 1
+
+echo "Waiting for app to launch"
+while [ -z "$(adb shell dumpsys window windows | grep $package)" ]
+do
+  echo "Still waiting for app to launch..."
+done
+
+echo "App is launched, starting script..."
+
+python3 $script || echo "Failed!"
 
 # Make screenshot
 adb exec-out screencap -p > screen.png

@@ -59,15 +59,29 @@ class CulebraTests(CulebraTestCase):
 
         _s = CulebraTests.sleep
         _v = CulebraTests.verbose
+        attempt = 0
 
+        while True:
+            try:
+                self.device.Log.d(TAG, "dumping content of window=-1", _v)
+                self.vc.dump(window=-1)
+                self.device.Log.d(TAG, "touching view with text=u'OK'",  _v)
+                self.vc.findViewWithTextOrRaise(u'OK').touch()
+                break
+            except:
+                attempt = attempt + 1
+                if attempt > 100:
+                    self.device.Log.d(TAG, "Failed, giving up...", _v)
+                    break
+                self.device.Log.d(TAG, "Failed, trying again...", _v)
+
+        self.vc.sleep(_s)
         self.device.Log.d(TAG, "dumping content of window=-1",  _v)
         self.vc.dump(window=-1)
-
         self.device.Log.d(TAG, "finding view with id=id/no_id/1",  _v)
         no_id1 = self.vc.findViewByIdOrRaise("id/no_id/1")
         self.device.Log.d(TAG, "finding view with id=id/no_id/2",  _v)
         no_id2 = self.vc.findViewByIdOrRaise("id/no_id/2")
-
         self.device.Log.d(TAG, "finding view with text=u'Welcome to WhatsApp'",  _v)
         no_id2 = self.vc.findViewWithTextOrRaise(u'Welcome to WhatsApp')
         self.device.Log.d(TAG, "finding view with id=com.whatsapp:id/eula_view",  _v)

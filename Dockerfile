@@ -1,9 +1,10 @@
 FROM androidsdk/android-29
 
-RUN apt update && apt install -y python python3 python3-pip python-setuptools
+RUN apt update && apt install -y python python3 python3-pip python-setuptools nodejs
 RUN pip3 install --upgrade pip setuptools wheel
 RUN pip3 install --pre androidviewclient --upgrade
 RUN pip3 install androidviewclient
+RUN pip3 install requests
 
 # RUN apt-get install -y cpu-checker qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils
 RUN echo "no" | avdmanager create avd  --name "Device" -k "system-images;android-29;google_apis;x86_64" --device "pixel_xl" --force

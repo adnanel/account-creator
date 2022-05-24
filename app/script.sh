@@ -22,7 +22,7 @@ done
 
 echo "App is launched, starting script..."
 
-python3 $script || echo "Failed!"
+python3 $script 387 "63 953 402" || echo "Failed!"
 
 # Make screenshot
 adb exec-out screencap -p > screen.png

@@ -35,6 +35,12 @@ adb shell 'echo "chrome --disable-fre --no-default-browser-check --no-first-run"
 
 echo "Emulator is ready!"
 
+echo "Launching backend"
+cd api
+chmod +x ./setup.sh
+./setup.sh &
+cd ..
+
 echo "Going into app dir..."
 cd app
 ls -ls

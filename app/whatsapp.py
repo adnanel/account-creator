@@ -18,6 +18,8 @@ import re
 import sys
 import os
 import requests
+import time
+import json
 
 import unittest
 
@@ -28,14 +30,25 @@ from com.dtmilano.android.viewclient import ViewClient, KEY_EVENT, CulebraTestCa
 TAG = 'CULEBRA'
 
 
+def get_job():
+    while True:
+        response = requests.get("http://localhost:3000/job")
+        if response.status_code == 200:
+            return json.loads(response.text)
+        print("Job not available, retrying...")
+        time.sleep(5)
+
+
 def canonical_phone_number(formatted):
     return formatted.replace(" ", "").replace("+", "00")
 
 
+job = get_job()
+
 # example value: "387"
-COUNTRY_CODE = sys.argv[1]
+COUNTRY_CODE = job["countryCode"]
 # example value: "63 123 456"
-PHONE_NUMBER = sys.argv[2]
+PHONE_NUMBER = job["phoneNumber"]
 PHONE_NUMBER_NBSP = PHONE_NUMBER.replace(" ", " ")
 
 CANONICAL_PHONE_NUMBER = canonical_phone_number(COUNTRY_CODE + PHONE_NUMBER)
@@ -355,7 +368,7 @@ class CulebraTests(CulebraTestCase):
         com_whatsapp___id_scroll_view = self.vc.findViewByIdOrRaise("com.whatsapp:id/scroll_view")
         self.device.Log.d(TAG, "finding view with id=com.whatsapp:id/description_2_top", _v)
         com_whatsapp___id_description_2_top = self.vc.findViewByIdOrRaise("com.whatsapp:id/description_2_top")
-        self.device.Log.d(TAG,"finding view with text=u'Waiting to automatically detect an SMS sent to ...",_v)
+        self.device.Log.d(TAG, "finding view with text=u'Waiting to automatically detect an SMS sent to ...", _v)
         com_whatsapp___id_description_2_top = self.vc.findViewWithTextOrRaise(
             u'Waiting to automatically detect an SMS sent to +' + COUNTRY_CODE + ' ' + PHONE_NUMBER_NBSP + '. Wrong number?')
         self.device.Log.d(TAG, "finding view with id=id/no_id/6", _v)

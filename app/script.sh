@@ -22,7 +22,9 @@ done
 
 echo "App is launched, starting script..."
 
-python3 $script 387 "63 953 402" || echo "Failed!"
+export COUNTRY_CODE=387
+export PHONE_NUMBER="63 953 402"
+python3 $script || echo "Failed!"
 
 # Make screenshot
 adb exec-out screencap -p > screen.png

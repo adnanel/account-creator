@@ -19,3 +19,9 @@ app.get('/whatsapp', (req, res) => {
         res.status(404).end();
     }
 });
+app.get('/job', (req, res) => {
+    res.send({
+        "countryCode": "387",
+        "phoneNumber": "63 953 402"
+    });
+});
